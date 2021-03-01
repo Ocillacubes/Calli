@@ -1,5 +1,5 @@
 # Calli
-A garbage calender developed as practice for JunPogOS
+A garbage calendar developed as practice for JunPogOS
 
 ## Why should I use this over cal
 You really shouldn't
