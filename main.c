@@ -51,15 +51,16 @@ int sdow() {
     return result;
 }
 
-void cal() {
+int main() {
     int dim[]={31,28,31,30,31,30,31,31,30,31,30,31}; // Lists of days in month
-    dim[1] = dim[1] + leap_year(); // Determine whether or not it's a leap year, and set dim[1] equal to how many days are in Februaru for the year
-    int today, cur_month, cur_dow;
+    dim[1] = dim[1] + leap_year(); // Determine whether or not it's a leap year, and set dim[1] equal to how many days are in February for the year
+    int today, cur_month, cur_dow; //Initalize variables that are about to be spammed into for loops
     const char *months[]={"January","February","March","April","May","June","July","August","September","October","November","December"};
     const char *dow[]={"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
-    // Print name of each month
+    // Set the starting date of the week
     int start_dow = sdow();
     cur_dow = start_dow;
+    // Print name of each month
     for (cur_month=0;cur_month<12;cur_month++) {
         printf("%s\n", months[cur_month]);
         // Print days of week under month
@@ -71,7 +72,7 @@ void cal() {
         for (today=0; today < cur_dow; today ++) {
             printf("    ");
         }
-        // Start printing dates
+        // Start spamming dates
         for (today=1;today <= dim[cur_month]; today++) {
             // Fix tabbing for single digit dates
             if (today < 10) {
@@ -83,16 +84,12 @@ void cal() {
             if ( ( (today + cur_dow) % 7 ) == 0) {
                 printf("\n");
             }
-            // Shift date over after each month
         }
+        // Shift date over after each month
+        cur_dow = ( ( cur_dow + dim[cur_month] ) % 7);
         printf("\n");
     }
-}
-
-int main() {
-    cal();
     return 0;
 }
-
 
 /* Notable bug with centuries, sdow tends to be off by 1 century from 21st for past, 1 off from 2022 from past 22nd century  */
