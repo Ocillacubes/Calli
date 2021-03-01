@@ -54,14 +54,19 @@ int sdow() {
 int main() {
     int dim[]={31,28,31,30,31,30,31,31,30,31,30,31}; // Lists of days in month
     dim[1] = dim[1] + leap_year(); // Determine whether or not it's a leap year, and set dim[1] equal to how many days are in February for the year
-    int today, cur_month, cur_dow; //Initalize variables that are about to be spammed into for loops
-    const char *months[]={"January","February","March","April","May","June","July","August","September","October","November","December"};
+    int today, cur_month, cur_dow, cur_space; //Initalize variables that are about to be spammed into for loops
+    const char *months[]={"January","February","March","April","May","June","July","August","September","October","November","December"}; //Wyatt said to put const here so I did altho tbh idk what it does
     const char *dow[]={"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+    int space_count[]={10,9,11,11,12,11,11,10,9,10,10,10}; // Number of spaces to tab over to center month names
     // Set the starting date of the week
     int start_dow = sdow();
     cur_dow = start_dow;
     // Print name of each month
     for (cur_month=0;cur_month<12;cur_month++) {
+        // Indent to center month name
+        for (cur_space=0;cur_space < space_count[cur_month];cur_space++) {
+            printf(" ");
+        }
         printf("%s\n", months[cur_month]);
         // Print days of week under month
         for (today=0;today<7;today++) {
