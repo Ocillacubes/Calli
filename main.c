@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 
+// Determine whether or not the year is a leap year
 int leap_year() {
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
@@ -29,14 +30,16 @@ int centuryp() {
     struct tm tm = *localtime(&t);
     int cur_year = tm.tm_year + 1900;
     int last_year = cur_year - 1;
+    // Uses last year because the source for the alg says to for Jan and February, iirc this has something to do with Englad switching in like 18th century from March as the first month
     while (last_year >= 100) {
         last_year /= 10;
     }
     return last_year;
 }
 
+// Find what day of the week the year started on
+// (day + (2.6(month)-.2) -2(century+1) + (year-1) + ((year-1)/4) + ((century+1)/4) ) % 7 is the formula used for this, sourced from https://cs.uwaterloo.ca/~alopez-o/math-faq/node73.html
 int sdow() {
-    // (day + (2.6(month)-.2) -2(century+1) + (year-1) + ((year-1)/4) + ((century+1)/4) ) % 7 is the formula used for this, sourced from https://cs.uwaterloo.ca/~alopez-o/math-faq/node73.html
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     int cur_year = tm.tm_year + 1900;
@@ -55,6 +58,8 @@ void cal() {
     const char *months[]={"January","February","March","April","May","June","July","August","September","October","November","December"};
     const char *dow[]={"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
     // Print name of each month
+    int start_dow = sdow();
+    cur_dow = start_dow;
     for (cur_month=0;cur_month<12;cur_month++) {
         printf("%s\n", months[cur_month]);
         // Print days of week under month
@@ -62,8 +67,26 @@ void cal() {
             printf("%s ", dow[today]);
         }
         printf("\n");
+        // Tab over based on Jan 1st's day of the week
+        for (today=0; today < cur_dow; today ++) {
+            printf("    ");
+        }
+        // Start printing dates
+        for (today=1;today <= dim[cur_month]; today++) {
+            // Fix tabbing for single digit dates
+            if (today < 10) {
+                printf("  %d ", today);
+            } else {
+                printf(" %d ", today);
+            }
+            // If the last date was a saturday, start a new line
+            if ( ( (today + cur_dow) % 7 ) == 0) {
+                printf("\n");
+            }
+            // Shift date over after each month
+        }
+        printf("\n");
     }
-    int start_dow = sdow();
 }
 
 int main() {
